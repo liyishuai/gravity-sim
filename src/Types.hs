@@ -57,5 +57,8 @@ instance ToJSON   Particle
 instance FromJSON Sample
 instance ToJSON   Sample
 
+instance FromJSON Force
+instance ToJSON   Force
+
 instance FromJSON World
 instance ToJSON   World
