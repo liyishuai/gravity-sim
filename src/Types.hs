@@ -4,19 +4,25 @@ module Types (
   Mass(..), Position(..), Velocity(..), Accel(..), Particle(..), World(..), Force(..)
 ) where
 
-import           Data.Aeson
+import           Data.Aeson            hiding (Array)
+import           Data.Array.Accelerate
 import           GHC.Generics
 
 newtype Mass   = Mass Float deriving (Show, Read, Generic) -- in kilograms
 data Position  = Pos { posx :: Float, posy :: Float, posz :: Float } deriving (Show, Read, Generic) -- in meters
 data Velocity  = Vel { velx :: Float, vely :: Float, velz :: Float } deriving (Show, Read, Generic) -- in meters/second
-data Accel     = Acc { accx :: Float, accy :: Float, accz :: Float } deriving (Show, Read, Generic) -- in meters/second^2
+data Accel     = Accel { accx :: Float, accy :: Float, accz :: Float } deriving (Show, Read, Generic) -- in meters/second^2
 data Force     = Force { fx :: Float, fy :: Float, fz :: Float} deriving (Show, Read, Generic) -- in newton
 
 data Particle = Particle {
     pmass :: Mass
   , ppos  :: Position
   , pvel  :: Velocity
+} deriving (Show, Read, Generic)
+
+data Sample = Sample {
+  spos :: Position,
+  sfor :: Force
 } deriving (Show, Read, Generic)
 
 -- The world state consists of three scaling factors and a set of particles.
@@ -33,6 +39,7 @@ data World = World {
   , pixInKg       :: Float -- fraction of a pixel corresponding to world kg
   , usrToWrldTime :: Float -- user time in s to world time
   , parts         :: [Particle]
+  , samples       :: [Sample]
 } deriving (Show, Read, Generic)
 
 instance FromJSON Position
@@ -46,6 +53,9 @@ instance ToJSON   Mass
 
 instance FromJSON Particle
 instance ToJSON   Particle
+
+instance FromJSON Sample
+instance ToJSON   Sample
 
 instance FromJSON World
 instance ToJSON   World

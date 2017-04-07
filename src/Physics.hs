@@ -1,4 +1,4 @@
-module Physics (gravity, (./)) where
+module Physics (gravity, (./), Field) where
 
 import           Types
 
@@ -26,8 +26,11 @@ gravity (Particle (Mass m0) (Pos x0 y0 z0) _) = Field f
         d        = sqrt dsqr
         absAccel = bigG * m0 * m1 / dsqr
 
-(./) :: Force -> Mass -> Accel
-(Force x y z) ./ (Mass m) = Acc (x / m) (y / m) (z / m)
+(./) :: Field -> Particle -> Accel
+Field f ./ p = let
+  Mass m = pmass p
+  Force x y z = f p in
+    Accel (x / m) (y / m) (z / m)
 
 (.+) :: Force -> Force -> Force
 Force x1 y1 z1 .+ Force x2 y2 z2 = Force (x1 + x2) (y1 + y2) (z1 + z2)
@@ -42,8 +45,8 @@ Field f1 .+. Field f2 = Field (\x -> f1 x .+ f2 x)
 --
 force :: Particle -> Particle -> Accel
 force (Particle (Mass _) (Pos x1 y1 z1) _) (Particle (Mass m2) (Pos x2 y2 z2) _)
-  | d < epsilon = Acc 0 0 0
-  | otherwise   = Acc (absAccel * dx / d) (absAccel * dy / d) (absAccel * dz / d)
+  | d < epsilon = Accel 0 0 0
+  | otherwise   = Accel (absAccel * dx / d) (absAccel * dy / d) (absAccel * dz / d)
   where
     dx       = x2 - x1
     dy       = y2 - y1
