@@ -45,14 +45,14 @@ getHomeR = defaultLayout $ do
   [whamlet|
     <div #box>
       <p>
-      <canvas #sky width=#{boxSizeX} height=#{boxSizeY}> 
+      <canvas #sky width=#{boxSizeX} height=#{boxSizeY}>
          Your browser doesn't support HTML 5
       <p>
-        Gravitational interaction demo based on one of 
-        <a href="http://www.cse.unsw.edu.au/~chak/" target="_blank">Manuel Chakravarty</a>'s 
-        Haskell course exercises. The simulation is done in Haskell on the server. 
-        Client code uses HTML 5 to display instantaneous positions of bodies. 
-        It communicates with the (stateless) server using JSON. The web site is written in 
+        Gravitational interaction demo based on one of
+        <a href="http://www.cse.unsw.edu.au/~chak/" target="_blank">Manuel Chakravarty</a>'s
+        Haskell course exercises. The simulation is done in Haskell on the server.
+        Client code uses HTML 5 to display instantaneous positions of bodies.
+        It communicates with the (stateless) server using JSON. The web site is written in
         <a href="http://www.yesodweb.com/" target="_blank">Yesod</a>.
         <div>
           <button #reset>Reset
@@ -84,8 +84,8 @@ getHomeR = defaultLayout $ do
   addScriptRemote "//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"
   toWidget [julius|
     var urls = { // map from simulation names to urls
-      solar:   "@{SolarR}", 
-      world4:  "@{World4R}" 
+      solar:   "@{SolarR}",
+      world4:  "@{World4R}"
     };
     // Important: changes to global variables
     // may only happen inside JSON handlers
@@ -106,7 +106,7 @@ getHomeR = defaultLayout $ do
     });
 
     function reset(simName) {
-        if (!urls[simName]) 
+        if (!urls[simName])
             alert("Error: invalid simulation: " + simName);
         $.getJSON(urls[simName], function(newWorld){
             newWorld.seqNum = curWorld? curWorld.seqNum + 1: 0;
@@ -152,28 +152,55 @@ getHomeR = defaultLayout $ do
     var dimX = #{toJSON boxSizeX};
     var dimY = #{toJSON boxSizeY};
 
+    function canvas_arrow(context, fromx, fromy, tox, toy){
+      var headlen = 10; // length of head in pixels
+      var dx = tox-fromx;
+      var dy = toy-fromy;
+      var angle = Math.atan2(dy,dx);
+      context.moveTo(fromx, fromy);
+      context.lineTo(tox, toy);
+      context.lineTo(tox-headlen*Math.cos(angle-Math.PI/6),toy-headlen*Math.sin(angle-Math.PI/6));
+      context.moveTo(tox, toy);
+      context.lineTo(tox-headlen*Math.cos(angle+Math.PI/6),toy-headlen*Math.sin(angle+Math.PI/6));
+    }
+
     function drawWorld() {
-        if (!curWorld) return true; // might happen
+      if (!curWorld) return true; // might happen
 
-        var canvas = document.getElementById('sky');
-        var ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, dimX, dimY);
-        ctx.fillStyle = "white";
+      var canvas = document.getElementById('sky');
+      var ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, dimX, dimY);
+      ctx.fillStyle = "white";
 
-        // Draw particles
-        var partsInView = 0;
-        for (var j = 0; j < curWorld.parts.length; j++) {
-            var part = curWorld.parts[j];
-          var size = Math.log(part.pmass/curWorld.pixInKg) / Math.LN10;
-          if (size < 2) size = 2;
-          var x = dimX/2 + curWorld.pixInM * part.ppos.posx;
-          var y = dimY/2 + curWorld.pixInM * part.ppos.posy;
-          if ( x > -10 && x < dimX + 10 && y > -10 && y < dimY + 10) {
-              partsInView += 1;
-              ctx.beginPath(); 
-              ctx.arc(x, y, size/2, 0, Math.PI * 2, true); 
-              ctx.fill();
-          }
+      // Draw particles
+      var partsInView = 0;
+      for (var j = 0; j < curWorld.parts.length; j++) {
+          var part = curWorld.parts[j];
+        var size = Math.log(part.pmass/curWorld.pixInKg) / Math.LN10;
+        if (size < 2) size = 2;
+        var x = dimX/2 + curWorld.pixInM * part.ppos.posx;
+        var y = dimY/2 + curWorld.pixInM * part.ppos.posy;
+        if ( x > -10 && x < dimX + 10 && y > -10 && y < dimY + 10) {
+          partsInView += 1;
+          ctx.beginPath();
+          ctx.arc(x, y, size/2, 0, Math.PI * 2, true);
+          ctx.fill();
+        }
+      }
+      // Draw samples
+      for (var j = 0; j < curWorld.samples.length; j++) {
+        var sample = curWorld.samples[j];
+        //var size = Math.log(part.pmass/curWorld.pixInKg) / Math.LN10;
+        var size = 20;
+        if (size < 2) size = 2;
+        var x = dimX/2 + curWorld.pixInM * sample.spos.posx;
+        var y = dimY/2 + curWorld.pixInM * sample.spos.posy;
+        partsInView += 1;
+        ctx.beginPath();
+        canvas_arrow(ctx, x, y, x+30, y+30);
+        ctx.globalAlpha = 0.25*j + 0.25;
+        ctx.stroke();
+        ctx.globalAlpha = 1;
       }
       return partsInView != 0;
     }
