@@ -3,11 +3,11 @@ module Physics (gravity, Field, zeroField, (./), (./.), (.+), (.+.)) where
 import           Types
 
 -- For floating point comparisons
-epsilon :: Float
+epsilon :: Double
 epsilon = 0.001
 
 -- Gravitational constant
-bigG :: Float
+bigG :: Double
 bigG = 6.67428e-11        -- in m^3 kg^(-1) s^(-2)
 
 zeroVel :: Velocity

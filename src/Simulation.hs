@@ -11,11 +11,11 @@ import           Types
 -- Move a particle according to its velocity for the given
 -- number of (simulated) seconds.
 --
-moveParticle :: Float -> Particle -> Particle
+moveParticle :: Double -> Particle -> Particle
 moveParticle dt (Particle m (Pos x y z) (Vel vx vy vz)) =
   Particle m (Pos (x + dt * vx) (y + dt * vy) (z + dt * vz)) (Vel vx vy vz)
 
-accelerate :: Float -> Field -> Particle -> Particle
+accelerate :: Double -> Field -> Particle -> Particle
 accelerate dt f p@(Particle mass pos vp) = let
   a = f ./. p
   vx = velx vp + accx a * dt
@@ -23,7 +23,7 @@ accelerate dt f p@(Particle mass pos vp) = let
   vz = velz vp + accz a * dt in
     Particle mass pos (Vel vx vy vz)
 
-advanceWorld :: Float -> World -> World
+advanceWorld :: Double -> World -> World
 advanceWorld dtReal world = let
   dt = dtReal * usrToWrldTime world
   particles = fromList $ parts world

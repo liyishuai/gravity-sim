@@ -8,11 +8,11 @@ import           Data.Aeson      hiding (Array)
 import           Data.Array.Repa
 import           GHC.Generics
 
-newtype Mass   = Mass Float deriving (Show, Read, Generic) -- in kilograms
-data Position  = Pos { posx :: Float, posy :: Float, posz :: Float } deriving (Show, Read, Generic) -- in meters
-data Velocity  = Vel { velx :: Float, vely :: Float, velz :: Float } deriving (Show, Read, Generic) -- in meters/second
-data Accel     = Accel { accx :: Float, accy :: Float, accz :: Float } deriving (Show, Read, Generic) -- in meters/second^2
-data Force     = Force { fx :: Float, fy :: Float, fz :: Float} deriving (Show, Read, Generic) -- in newton
+newtype Mass   = Mass Double deriving (Show, Read, Generic) -- in kilograms
+data Position  = Pos { posx :: Double, posy :: Double, posz :: Double } deriving (Show, Read, Generic) -- in meters
+data Velocity  = Vel { velx :: Double, vely :: Double, velz :: Double } deriving (Show, Read, Generic) -- in meters/second
+data Accel     = Accel { accx :: Double, accy :: Double, accz :: Double } deriving (Show, Read, Generic) -- in meters/second^2
+data Force     = Force { fx :: Double, fy :: Double, fz :: Double} deriving (Show, Read, Generic) -- in newton
 
 data Particle = Particle {
     pmass :: Mass
@@ -35,9 +35,9 @@ data Sample = Sample {
 --
 data World = World {
     seqNum        :: Int   -- sequence number to serialize communications
-  , pixInM        :: Float -- fraction of a pixel corresponding to world meter
-  , pixInKg       :: Float -- fraction of a pixel corresponding to world kg
-  , usrToWrldTime :: Float -- user time in s to world time
+  , pixInM        :: Double -- fraction of a pixel corresponding to world meter
+  , pixInKg       :: Double -- fraction of a pixel corresponding to world kg
+  , usrToWrldTime :: Double -- user time in s to world time
   , parts         :: [Particle]
   , samples       :: [Sample]
 } deriving (Show, Read, Generic)
