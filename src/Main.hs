@@ -171,6 +171,7 @@ getHomeR = defaultLayout $ do
       var ctx = canvas.getContext('2d');
       ctx.clearRect(0, 0, dimX, dimY);
       ctx.fillStyle = "white";
+      ctx.strokeStyle = "white";
 
       // Draw particles
       var partsInView = 0;
