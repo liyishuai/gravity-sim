@@ -25,9 +25,9 @@ gravity (Particle (Mass m0) (Pos x0 y0 z0) _) = Field f
       | d < epsilon = Force 0 0 0
       | otherwise = Force (absAccel * dx / d) (absAccel * dy / d) (absAccel * dz / d)
       where
-        dx       = x1 - x0
-        dy       = y1 - y0
-        dz       = z1 - z0
+        dx       = x0 - x1
+        dy       = y0 - y1
+        dz       = z0 - z1
         dsqr     = dx * dx + dy * dy + dz * dz
         d        = sqrt dsqr
         absAccel = bigG * m0 * m1 / dsqr

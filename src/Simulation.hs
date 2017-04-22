@@ -1,7 +1,8 @@
-module Simulation (moveParticle) where
+module Simulation (advanceWorld) where
 
 import           Control.Parallel.Strategies
 import           Data.Array.Repa             as R
+import           Data.Array.Repa.Index       (DIM1)
 import           Data.Array.Repa.Repr.Vector
 import           Data.Vector                 as V
 import           Physics
@@ -25,9 +26,10 @@ accelerate dt f p@(Particle mass pos vp) = let
 advanceWorld :: Float -> World -> World
 advanceWorld dtReal world = let
   dt = dtReal * usrToWrldTime world
-  gravityFields = V.map gravity $ fromList $ parts world
+  particles = fromList $ parts world
+  gravityFields = V.map gravity $ particles
   gravityField = V.foldl (.+.) zeroField gravityFields
   field = gravityField
-  dParticles = fromListVector Z $ parts world
+  dParticles = fromVector (ix1 (V.length particles)) particles
   newParticles = R.map (moveParticle dt . accelerate dt field) dParticles in
     world { parts = R.toList newParticles }

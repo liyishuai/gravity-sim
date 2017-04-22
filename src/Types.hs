@@ -4,7 +4,7 @@ module Types (
   Mass(..), Position(..), Velocity(..), Accel(..), Particle(..), World(..), Force(..), Sample(..)
 ) where
 
-import           Data.Aeson            hiding (Array)
+import           Data.Aeson      hiding (Array)
 import           Data.Array.Repa
 import           GHC.Generics
 
