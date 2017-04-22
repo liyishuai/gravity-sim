@@ -1,7 +1,9 @@
 module Simulation (moveParticle) where
 
 import           Control.Parallel.Strategies
-import           Data.Array.Accelerate
+import           Data.Array.Repa             as R
+import           Data.Array.Repa.Repr.Vector
+import           Data.Vector                 as V
 import           Physics
 import           Types
 
@@ -14,34 +16,18 @@ moveParticle dt (Particle m (Pos x y z) (Vel vx vy vz)) =
 
 accelerate :: Float -> Field -> Particle -> Particle
 accelerate dt f p@(Particle mass pos vp) = let
-  a = f ./ p
+  a = f ./. p
   vx = velx vp + accx a * dt
   vy = vely vp + accy a * dt
   vz = velz vp + accz a * dt in
     Particle mass pos (Vel vx vy vz)
 
--- Accelerate a particle in dependence on the gravitational force
--- exerted by all other particles for
--- the given number of (simulated) seconds.
--- force :: Particle -> Particle -> Accel
-{-
-accelerate :: Float -> [Particle] -> [Particle]
-accelerate dt particles =
-    parMap rseq acc particles
-  where
-    acc particle =
-      foldl addAcc particle particles
-    addAcc myParticle@(Particle m pos (Vel vx vy)) otherParticle =
-      let (Acc ax ay) = force myParticle otherParticle
-      in
-        Particle m pos (Vel (vx + dt * ax) (vy + dt * ay))
-
--- Progressing the world state
---
 advanceWorld :: Float -> World -> World
-advanceWorld dtReal world =
-  let dt = dtReal * usrToWrldTime world
-      newParticles = map (moveParticle dt) (accelerate dt $ parts world)
-  in
-      world { parts = newParticles }
--}
+advanceWorld dtReal world = let
+  dt = dtReal * usrToWrldTime world
+  gravityFields = V.map gravity $ fromList $ parts world
+  gravityField = V.foldl (.+.) zeroField gravityFields
+  field = gravityField
+  dParticles = fromListVector Z $ parts world
+  newParticles = R.map (moveParticle dt . accelerate dt field) dParticles in
+    world { parts = R.toList newParticles }

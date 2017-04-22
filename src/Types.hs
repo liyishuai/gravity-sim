@@ -5,7 +5,7 @@ module Types (
 ) where
 
 import           Data.Aeson            hiding (Array)
-import           Data.Array.Accelerate
+import           Data.Array.Repa
 import           GHC.Generics
 
 newtype Mass   = Mass Float deriving (Show, Read, Generic) -- in kilograms

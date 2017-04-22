@@ -1,4 +1,4 @@
-module Physics (gravity, (./), Field) where
+module Physics (gravity, Field, zeroField, (./), (./.), (.+), (.+.)) where
 
 import           Types
 
@@ -10,7 +10,13 @@ epsilon = 0.001
 bigG :: Float
 bigG = 6.67428e-11        -- in m^3 kg^(-1) s^(-2)
 
+zeroVel :: Velocity
+zeroVel = Vel 0 0 0
+
 newtype Field = Field (Particle -> Force)
+
+zeroField :: Field
+zeroField = Field $ \_ -> Force 0 0 0
 
 gravity :: Particle -> Field
 gravity (Particle (Mass m0) (Pos x0 y0 z0) _) = Field f
@@ -26,8 +32,11 @@ gravity (Particle (Mass m0) (Pos x0 y0 z0) _) = Field f
         d        = sqrt dsqr
         absAccel = bigG * m0 * m1 / dsqr
 
-(./) :: Field -> Particle -> Accel
-Field f ./ p = let
+(./) :: Field -> Particle -> Force
+Field f ./ p = f p
+
+(./.) :: Field -> Particle -> Accel
+Field f ./. p = let
   Mass m = pmass p
   Force x y z = f p in
     Accel (x / m) (y / m) (z / m)
@@ -37,20 +46,3 @@ Force x1 y1 z1 .+ Force x2 y2 z2 = Force (x1 + x2) (y1 + y2) (z1 + z2)
 
 (.+.) :: Field -> Field -> Field
 Field f1 .+. Field f2 = Field (\x -> f1 x .+ f2 x)
-
--- Given two particles, determine the acceleration exerted by the second on the first.
---
--- As a special case, the force is zero if both particles are closer than
--- a minimal epsilon distance.
---
-force :: Particle -> Particle -> Accel
-force (Particle (Mass _) (Pos x1 y1 z1) _) (Particle (Mass m2) (Pos x2 y2 z2) _)
-  | d < epsilon = Accel 0 0 0
-  | otherwise   = Accel (absAccel * dx / d) (absAccel * dy / d) (absAccel * dz / d)
-  where
-    dx       = x2 - x1
-    dy       = y2 - y1
-    dz       = z2 - z1
-    dsqr     = dx * dx + dy * dy + dz * dz
-    d        = sqrt dsqr
-    absAccel = bigG * m2 / dsqr
