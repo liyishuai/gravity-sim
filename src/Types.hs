@@ -34,9 +34,10 @@ data Sample = Sample {
 --   one second of real time.
 --
 data World = World {
-    seqNum        :: Int   -- sequence number to serialize communications
+    seqNum        :: Int    -- sequence number to serialize communications
   , pixInM        :: Double -- fraction of a pixel corresponding to world meter
   , pixInKg       :: Double -- fraction of a pixel corresponding to world kg
+  , pixInN        :: Double -- fraction of a pixel corresponding to world newton
   , usrToWrldTime :: Double -- user time in s to world time
   , parts         :: [Particle]
   , samples       :: [Sample]

@@ -30,7 +30,7 @@ readWorld fname
        exitFailure
 
 solarWorld :: World
-solarWorld = World 0 distanceScale (earthMass / 10000) 750
+solarWorld = World 0 distanceScale (earthMass / 10000) 10000 750
                       [ Particle (Mass sunMass)
                                  (Pos 0 0 0) (Vel 0 0 0)
                       , Particle (Mass cometMass)
@@ -67,9 +67,12 @@ solarWorld = World 0 distanceScale (earthMass / 10000) 750
     distanceScale = (fromIntegral height * 0.4) / earthDist
 
 world4 :: World
-world4 = World 0 0.5 9.42590890872e11 1
+world4 = World 0 0.5 9.42590890872e11 1 1
                [ Particle (Mass 1e16) (Pos (-100) 30 0) (Vel 0 (-65) 0)
                , Particle (Mass 1e16) (Pos 240 0 0)     (Vel (-40) 30 0)
                , Particle (Mass 1e16) (Pos 50 200 0)    (Vel 0 (-30) 0)
                , Particle (Mass 1e15) (Pos 0 (-300) 0)  (Vel 0 5 0)]
-               []
+               [ Sample (Pos (-100) 30 0) (Force (-100) 30 0)
+               , Sample (Pos 240 0 0)     (Force 240 0 0)
+               , Sample (Pos 50 200 0)    (Force 240 0 0)
+               , Sample (Pos 0 (-300) 0)  (Force 0 (-300) 0)]
