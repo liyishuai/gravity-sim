@@ -45,10 +45,10 @@ solarWorld = World 0 distanceScale (earthMass / 10000) 750
                                  (Pos venusDist  0 0) (Vel 0 venusVelocity 0)
                       , Particle (Mass mercuryMass)
                                  (Pos mercuryDist  0 0) (Vel 0 mercuryVelocity 0)]
-                      [ Sample (Pos earthDist venusDist 0) (Force 0 (-65) (-65))
-                      , Sample (Pos venusDist earthDist 0)     (Force (-40) 30 30)
-                      , Sample (Pos earthDist mercuryDist 0)    (Force 0 (-30) (-30))
-                      , Sample (Pos mercuryDist venusDist 0)  (Force 0 5 5)]
+                      [ Sample (Pos earthDist venusDist 0)   (Force 0 (-65) (-65))
+                      , Sample (Pos venusDist earthDist 0)   (Force (-40) 30 30)
+                      , Sample (Pos earthDist mercuryDist 0) (Force 0 (-30) (-30))
+                      , Sample (Pos mercuryDist venusDist 0) (Force 0 5 5)]
   where
     sunMass         = 1.9891e30
     earthDist       = 152098232e3   -- Aphelion

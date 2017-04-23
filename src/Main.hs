@@ -191,17 +191,14 @@ getHomeR = defaultLayout $ do
       // Draw samples
       for (var j = 0; j < curWorld.samples.length; j++) {
         var sample = curWorld.samples[j];
-        //var size = Math.log(part.pmass/curWorld.pixInKg) / Math.LN10;
-        var size = 20;
-        if (size < 2) size = 2;
-        var x = dimX/2 + curWorld.pixInM * sample.spos.posx;
-        var y = dimY/2 + curWorld.pixInM * sample.spos.posy;
-        partsInView += 1;
+        var x = dimX/2 + curWorld.pixInM * sample.spos.posx,
+            y = dimY/2 + curWorld.pixInM * sample.spos.posy,
+            fx = sample.sfor.fx,
+            fy = sample.sfor.fy;
         ctx.beginPath();
-        canvas_arrow(ctx, x, y, x+30, y+30);
-        ctx.globalAlpha = 0.25*j + 0.25;
+        canvas_arrow(ctx, x, y, x+fx*10000, y+fy*10000);
         ctx.stroke();
-        ctx.globalAlpha = 1;
+        partsInView += 1;
       }
       return partsInView != 0;
     }
