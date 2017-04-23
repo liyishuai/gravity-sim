@@ -1,4 +1,4 @@
-module Physics (gravity, Field, zeroField, (./), (./.), (.+), (.+.)) where
+module Physics (gravity, Field, zeroField, posPart, (./), (./.), (.+), (.+.)) where
 
 import           Types
 
@@ -10,8 +10,14 @@ epsilon = 0.001
 bigG :: Float
 bigG = 6.67428e-11        -- in m^3 kg^(-1) s^(-2)
 
+oneKG :: Mass
+oneKG = Mass 1
+
 zeroVel :: Velocity
 zeroVel = Vel 0 0 0
+
+posPart :: Position -> Particle
+posPart pos = Particle oneKG pos zeroVel
 
 newtype Field = Field (Particle -> Force)
 

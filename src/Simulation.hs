@@ -23,6 +23,12 @@ accelerate dt f p@(Particle mass pos vp) = let
   vz = velz vp + accz a * dt in
     Particle mass pos (Vel vx vy vz)
 
+updateSample :: Field -> [Sample] -> [Sample]
+updateSample f samps = let
+  vSamples = fromList samps
+  newSamps = V.map (\s -> s { sfor = f ./ (posPart (spos s))} ) vSamples in
+    V.toList newSamps
+
 advanceWorld :: Float -> World -> World
 advanceWorld dtReal world = let
   dt = dtReal * usrToWrldTime world
@@ -32,4 +38,5 @@ advanceWorld dtReal world = let
   field = gravityField
   dParticles = fromVector (ix1 (V.length particles)) particles
   newParticles = R.map (moveParticle dt . accelerate dt field) dParticles in
-    world { parts = R.toList newParticles }
+    world { parts = R.toList newParticles,
+            samples = updateSample field $ samples world }
