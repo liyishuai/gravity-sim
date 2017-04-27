@@ -55,14 +55,6 @@ getHomeR = defaultLayout $ do
       <canvas #sky width=#{boxSizeX} height=#{boxSizeY}>
          Your browser doesn't support HTML 5
       <p>
-        Field interaction demo based on one of
-        <a href="http://www.cse.unsw.edu.au/~chak/" target="_blank">
-        Manuel Chakravarty</a>'s Haskell course exercises.
-        The simulation is done in Haskell on the server.
-        Client code uses HTML 5 to display instantaneous positions of bodies.
-        It communicates with the (stateless) server using JSON.
-        The web site is written in
-        <a href="http://www.yesodweb.com/" target="_blank">Yesod</a>.
         <div>
           <button #reset>Reset
           <select>
