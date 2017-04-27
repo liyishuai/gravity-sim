@@ -22,7 +22,7 @@ simWorld t dt = let
 
 -- | Two particles are far from each other
 (~=) :: Particle -> Particle -> Property
-(~=) (Particle _ (Pos x1 y1 z1) _) (Particle _ (Pos x2 y2 z2) _) = let
+(~=) (Particle _ _ (Pos x1 y1 z1) _) (Particle _ _ (Pos x2 y2 z2) _) = let
   distance = sqrt ((x1 - x2) ^ 2 + (y1 - y2) ^ 2 + (z1 - z2) ^ 2) in
     counterexample ("distance = " ++ show distance) (distance > epsilon)
   where

@@ -1,7 +1,7 @@
 {-# LANGUAGE DeriveGeneric #-}
 
 module Types (
-  Mass(..), Position(..), Velocity(..), Accel(..), Particle(..), World(..), Force(..), Sample(..)
+  Mass(..), Charge(..), Position(..), Velocity(..), Accel(..), Particle(..), World(..), Force(..), Sample(..)
 ) where
 
 import           Data.Aeson      hiding (Array)

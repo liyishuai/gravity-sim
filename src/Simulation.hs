@@ -12,16 +12,16 @@ import           Types
 -- number of (simulated) seconds.
 --
 moveParticle :: Double -> Particle -> Particle
-moveParticle dt (Particle m (Pos x y z) (Vel vx vy vz)) =
-  Particle m (Pos (x + dt * vx) (y + dt * vy) (z + dt * vz)) (Vel vx vy vz)
+moveParticle dt (Particle m c (Pos x y z) (Vel vx vy vz)) =
+  Particle m c (Pos (x + dt * vx) (y + dt * vy) (z + dt * vz)) (Vel vx vy vz)
 
 accelerate :: Double -> Field -> Particle -> Particle
-accelerate dt f p@(Particle mass pos vp) = let
+accelerate dt f p@(Particle mass c pos vp) = let
   a = f ./. p
   vx = velx vp + accx a * dt
   vy = vely vp + accy a * dt
   vz = velz vp + accz a * dt in
-    Particle mass pos (Vel vx vy vz)
+    Particle mass c pos (Vel vx vy vz)
 
 updateSample :: Field -> [Sample] -> [Sample]
 updateSample f samps = let

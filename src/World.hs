@@ -10,6 +10,7 @@ module World (
 ) where
 
 import           Control.Exception (catch)
+import           Physics
 import           System.Exit       (exitFailure)
 import           Types
 
@@ -31,19 +32,19 @@ readWorld fname
 
 solarWorld :: World
 solarWorld = World 0 distanceScale (earthMass / 10000) 800 1e6
-                      [ Particle (Mass sunMass)
+                      [ Particle (Mass sunMass) zeroCharge
                                  (Pos 0 0 0) (Vel 0 0 0)
-                      , Particle (Mass cometMass)
+                      , Particle (Mass cometMass) zeroCharge
                                  (Pos cometDist 0 0) (Vel 0 cometVelocity 0)
-                      , Particle (Mass cometMass)
+                      , Particle (Mass cometMass) zeroCharge
                                  (Pos (-cometDist) (-cometDist) 0) (Vel 5000 (-5000) 0)
-                      , Particle (Mass cometMass)
+                      , Particle (Mass cometMass) zeroCharge
                                  (Pos 2.0e11 1.0e11 0) (Vel (-2500) 5000 0)
-                      , Particle (Mass earthMass)
+                      , Particle (Mass earthMass) zeroCharge
                                  (Pos earthDist  0 0) (Vel 0 earthVelocity 0)
-                      , Particle (Mass venusMass)
+                      , Particle (Mass venusMass) zeroCharge
                                  (Pos venusDist  0 0) (Vel 0 venusVelocity 0)
-                      , Particle (Mass mercuryMass)
+                      , Particle (Mass mercuryMass) zeroCharge
                                  (Pos mercuryDist  0 0) (Vel 0 mercuryVelocity 0)]
                       getSamples
   where
@@ -72,10 +73,10 @@ plotSamplesCircle n r =
 
 world4 :: World
 world4 = World 0 0.5 9.42590890872e11 1 1
-               [ Particle (Mass 1e16) (Pos (-100) 30 0) (Vel 0 (-65) 0)
-               , Particle (Mass 1e16) (Pos 240 0 0)     (Vel (-40) 30 0)
-               , Particle (Mass 1e16) (Pos 50 200 0)    (Vel 0 (-30) 0)
-               , Particle (Mass 1e15) (Pos 0 (-300) 0)  (Vel 0 5 0)]
+               [ Particle (Mass 1e16) zeroCharge (Pos (-100) 30 0) (Vel 0 (-65) 0)
+               , Particle (Mass 1e16) zeroCharge (Pos 240 0 0)     (Vel (-40) 30 0)
+               , Particle (Mass 1e16) zeroCharge (Pos 50 200 0)    (Vel 0 (-30) 0)
+               , Particle (Mass 1e15) zeroCharge (Pos 0 (-300) 0)  (Vel 0 5 0)]
                getSamples
   where getSamples = [ Sample (Pos (-100) 30 0) (Force (-100) 30 0)
                      , Sample (Pos 240 0 0)     (Force 240 0 0)

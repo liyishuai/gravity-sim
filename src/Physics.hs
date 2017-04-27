@@ -1,4 +1,4 @@
-module Physics (bigG, gravity, Field, zeroField, posPart, (./), (./.), (.+), (.+.)) where
+module Physics (bigG, gravity, Field, zeroCharge, zeroField, posPart, (./), (./.), (.+), (.+.)) where
 
 import           Types
 
@@ -13,11 +13,14 @@ bigG = 6.67428e-11        -- in m^3 kg^(-1) s^(-2)
 oneKG :: Mass
 oneKG = Mass 1
 
+zeroCharge :: Charge
+zeroCharge = Charge 0
+
 zeroVel :: Velocity
 zeroVel = Vel 0 0 0
 
 posPart :: Position -> Particle
-posPart pos = Particle oneKG pos zeroVel
+posPart pos = Particle oneKG zeroCharge pos zeroVel
 
 newtype Field = Field (Particle -> Force)
 
@@ -25,9 +28,9 @@ zeroField :: Field
 zeroField = Field $ \_ -> Force 0 0 0
 
 gravity :: Particle -> Field
-gravity (Particle (Mass m0) (Pos x0 y0 z0) _) = Field f
+gravity (Particle (Mass m0) _ (Pos x0 y0 z0) _) = Field f
   where
-    f (Particle (Mass m1) (Pos x1 y1 z1) _)
+    f (Particle (Mass m1) _ (Pos x1 y1 z1) _)
       | d < epsilon = Force 0 0 0
       | otherwise = Force (absAccel * dx / d) (absAccel * dy / d) (absAccel * dz / d)
       where
