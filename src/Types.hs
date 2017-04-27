@@ -1,12 +1,13 @@
 {-# LANGUAGE DeriveGeneric #-}
 
 module Types (
-  Mass(..), Charge(..), Position(..), Velocity(..), Accel(..), Particle(..), World(..), Force(..), Sample(..)
+  Mass(..), Charge(..), Position(..), Velocity(..), Accel(..), Particle(..), World(..), Force(..), Sample(..), partsWorld
 ) where
 
 import           Data.Aeson      hiding (Array)
 import           Data.Array.Repa
 import           GHC.Generics
+import           Test.QuickCheck
 
 newtype Mass   = Mass Double deriving (Show, Read, Generic) -- in kilograms
 newtype Charge = Charge Double deriving (Show, Read, Generic) -- in Coulomb
@@ -69,3 +70,60 @@ instance ToJSON   Force
 
 instance FromJSON World
 instance ToJSON   World
+
+instance Eq Position where
+  Pos x1 y1 z1 == Pos x2 y2 z2 = let
+    dx = x1 - x2
+    dy = y1 - y2
+    dz = z1 - z2
+    sqrd = dx^2 + dy^2 + dz^2
+    d = sqrt sqrd in
+      d < epsilon where
+    epsilon = 1e-10
+
+instance Eq Force where
+  Force x1 y1 z1 == Force x2 y2 z2 = let
+    dx = x1 - x2
+    dy = y1 - y2
+    dz = z1 - z2
+    sqrd = dx^2 + dy^2 + dz^2
+    d = sqrt sqrd in
+      d < epsilon where
+    epsilon = 1e-10
+
+instance Eq Sample where
+  Sample p1 f1 == Sample p2 f2 = p1 == p2 && f1 == f2
+
+instance Eq World where
+  w1 == w2 = let
+    samps1 = samples w1
+    samps2 = samples w2 in
+      samps1 == samps2
+
+instance Arbitrary Position where
+  arbitrary = do
+    (x,y,z) <- arbitrary
+    return $ Pos x y z
+
+instance Arbitrary Particle where
+  arbitrary = do
+    m <- suchThat arbitrary (>0)
+    (c,pos,vx,vy,vz) <- arbitrary
+    return $ Particle (Mass m) (Charge c) pos (Vel vx vy vz)
+
+instance Arbitrary Sample where
+  arbitrary = do
+    (pos,fx,fy,fz) <- arbitrary
+    return $ Sample pos (Force fx fy fz)
+
+instance Arbitrary World where
+  arbitrary = do
+    (sn,pm,pkg,pn,maxc) <- arbitrary
+    (uwt,parts,samps) <- arbitrary
+    return $ World sn pm pkg pn maxc uwt parts samps
+
+-- | Generates an arbitrary world on given particles
+partsWorld :: [Particle] -> Gen World
+partsWorld ps = do
+  world <- arbitrary
+  return $ world { parts = ps }
