@@ -176,13 +176,21 @@ getHomeR = defaultLayout $ do
       // Draw particles
       var partsInView = 0;
       for (var j = 0; j < curWorld.parts.length; j++) {
-          var part = curWorld.parts[j];
-        var size = Math.log(part.pmass/curWorld.pixInKg) / Math.LN10;
+        var part = curWorld.parts[j],
+            size = Math.log(part.pmass/curWorld.pixInKg) / Math.LN10;
         if (size < 2) size = 2;
-        var x = dimX/2 + curWorld.pixInM * part.ppos.posx;
-        var y = dimY/2 + curWorld.pixInM * part.ppos.posy;
+        var x = dimX/2 + curWorld.pixInM * part.ppos.posx,
+            y = dimY/2 + curWorld.pixInM * part.ppos.posy,
+            color = Math.round(part.pchar / curWorld.maxCharge * 255);
         if ( x > -10 && x < dimX + 10 && y > -10 && y < dimY + 10) {
           partsInView += 1;
+          if (color >= 0) {
+            color = 255 - color;
+            ctx.fillStyle = 'rgb(255, ' + color + ', ' + color + ')';
+          } else {
+            color = 255 - Math.abs(color);
+            ctx.fillStyle = 'rgb(' + color + ', ' + color + ', 255)';
+          }
           ctx.beginPath();
           ctx.arc(x, y, size/2, 0, Math.PI * 2, true);
           ctx.fill();

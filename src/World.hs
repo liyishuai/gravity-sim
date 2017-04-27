@@ -31,7 +31,7 @@ readWorld fname
        exitFailure
 
 solarWorld :: World
-solarWorld = World 0 distanceScale (earthMass / 10000) 800 1e6
+solarWorld = World 0 distanceScale (earthMass / 10000) 800 1 1e6
                       [ Particle (Mass sunMass) zeroCharge
                                  (Pos 0 0 0) (Vel 0 0 0)
                       , Particle (Mass cometMass) zeroCharge
@@ -72,13 +72,20 @@ plotSamplesCircle n r =
   where ang i = 2 * pi / realToFrac n * realToFrac i
 
 world4 :: World
-world4 = World 0 0.5 9.42590890872e11 1 1
+world4 = World 0 0.5 9.42590890872e11 1 1 1
                [ Particle (Mass 1e16) zeroCharge (Pos (-100) 30 0) (Vel 0 (-65) 0)
                , Particle (Mass 1e16) zeroCharge (Pos 240 0 0)     (Vel (-40) 30 0)
                , Particle (Mass 1e16) zeroCharge (Pos 50 200 0)    (Vel 0 (-30) 0)
                , Particle (Mass 1e15) zeroCharge (Pos 0 (-300) 0)  (Vel 0 5 0)]
                getSamples
-  where getSamples = [ Sample (Pos (-100) 30 0) (Force (-100) 30 0)
-                     , Sample (Pos 240 0 0)     (Force 240 0 0)
-                     , Sample (Pos 50 200 0)    (Force 240 0 0)
-                     , Sample (Pos 0 (-300) 0)  (Force 0 (-300) 0)]
+  where getSamples = plotSamplesGrid 4 4 scale
+        scale      = 0.5
+
+plotSamplesGrid :: Int -> Int -> Double -> [Sample]
+plotSamplesGrid m n scale =
+  map (\(x, y) -> Sample (Pos (minx + ux * x) (miny + uy * y) 0) (Force 0 0 0))
+      [(realToFrac x, realToFrac y) | x <- [1..m], y <- [1..n]]
+  where minx = -realToFrac width  / 2 / scale
+        miny = -realToFrac height / 2 / scale
+        ux   =  realToFrac width  / realToFrac (m + 1) / scale
+        uy   =  realToFrac height / realToFrac (n + 1) / scale

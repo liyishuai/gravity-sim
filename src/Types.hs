@@ -40,6 +40,7 @@ data World = World {
   , pixInM        :: Double -- fraction of a pixel corresponding to world meter
   , pixInKg       :: Double -- fraction of a pixel corresponding to world kg
   , pixInN        :: Double -- fraction of a pixel corresponding to world newton
+  , maxCharge     :: Double -- abs value of max particle charge in Coulomb
   , usrToWrldTime :: Double -- user time in s to world time
   , parts         :: [Particle]
   , samples       :: [Sample]
