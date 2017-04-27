@@ -31,6 +31,11 @@ updateSample f samps = let
 
 advanceWorld :: Double -> World -> World
 advanceWorld dt world = let
+  particles    :: Vector Particle
+  dParticles   :: Array V DIM1 Particle
+  newParticles :: Array D DIM1 Particle
+  fields       :: Vector Field
+  field        :: Field
   particles = fromList $ parts world
   fields = V.map (gravity +. electro) particles
   field = V.foldl (.+.) zeroField fields
