@@ -31,7 +31,7 @@ readWorld fname
        exitFailure
 
 solarWorld :: World
-solarWorld = World 0 distanceScale (earthMass / 10000) 800 1e6
+solarWorld = World 0 distanceScale (earthMass / 10000) 800 1 1e6
                       [ Particle (Mass sunMass) zeroCharge
                                  (Pos 0 0 0) (Vel 0 0 0)
                       , Particle (Mass cometMass) zeroCharge
@@ -72,7 +72,7 @@ plotSamplesCircle n r =
   where ang i = 2 * pi / realToFrac n * realToFrac i
 
 world4 :: World
-world4 = World 0 0.5 9.42590890872e11 1 1
+world4 = World 0 0.5 9.42590890872e11 1 1 1
                [ Particle (Mass 1e16) zeroCharge (Pos (-100) 30 0) (Vel 0 (-65) 0)
                , Particle (Mass 1e16) zeroCharge (Pos 240 0 0)     (Vel (-40) 30 0)
                , Particle (Mass 1e16) zeroCharge (Pos 50 200 0)    (Vel 0 (-30) 0)
