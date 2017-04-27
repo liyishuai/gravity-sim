@@ -87,5 +87,5 @@ plotSamplesGrid m n scale =
       [(realToFrac x, realToFrac y) | x <- [1..m], y <- [1..n]]
   where minx = -realToFrac width  / 2 / scale
         miny = -realToFrac height / 2 / scale
-        ux =    realToFrac width  / realToFrac (m + 1) / scale
-        uy =    realToFrac height / realToFrac (n + 1) / scale
+        ux   =  realToFrac width  / realToFrac (m + 1) / scale
+        uy   =  realToFrac height / realToFrac (n + 1) / scale
