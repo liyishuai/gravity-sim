@@ -30,8 +30,7 @@ updateSample f samps = let
     V.toList newSamps
 
 advanceWorld :: Double -> World -> World
-advanceWorld dtReal world = let
-  dt = dtReal * usrToWrldTime world
+advanceWorld dt world = let
   particles = fromList $ parts world
   gravityFields = V.map gravity $ particles
   gravityField = V.foldl (.+.) zeroField gravityFields

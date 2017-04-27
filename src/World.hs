@@ -30,7 +30,7 @@ readWorld fname
        exitFailure
 
 solarWorld :: World
-solarWorld = World 0 distanceScale (earthMass / 10000) 10000 750
+solarWorld = World 0 distanceScale (earthMass / 10000) 10000 1e6
                       [ Particle (Mass sunMass)
                                  (Pos 0 0 0) (Vel 0 0 0)
                       , Particle (Mass cometMass)
@@ -53,13 +53,13 @@ solarWorld = World 0 distanceScale (earthMass / 10000) 10000 750
     sunMass         = 1.9891e30
     earthDist       = 152098232e3   -- Aphelion
     earthMass       = 5.9736e24
-    earthVelocity   = 29.78e3
+    earthVelocity   = 29543.941651224563
     venusDist       = 1.08e11
     venusMass       = 4.869e24
-    venusVelocity   = 35e3
+    venusVelocity   = 35060.543334193906
     mercuryDist     = 4.6e10
     mercuryMass     = 3.3e23
-    mercuryVelocity = 49.88e3
+    mercuryVelocity = 53721.929673328814
     cometDist       = 2.0e11
     cometMass       = 1.0e20
     cometVelocity   = 7000

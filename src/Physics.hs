@@ -1,4 +1,4 @@
-module Physics (gravity, Field, zeroField, posPart, (./), (./.), (.+), (.+.)) where
+module Physics (bigG, gravity, Field, zeroField, posPart, (./), (./.), (.+), (.+.)) where
 
 import           Types
 
