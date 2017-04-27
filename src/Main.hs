@@ -52,11 +52,13 @@ getHomeR = defaultLayout $ do
       <canvas #sky width=#{boxSizeX} height=#{boxSizeY}>
          Your browser doesn't support HTML 5
       <p>
-        Gravitational interaction demo based on one of
-        <a href="http://www.cse.unsw.edu.au/~chak/" target="_blank">Manuel Chakravarty</a>'s
-        Haskell course exercises. The simulation is done in Haskell on the server.
+        Field interaction demo based on one of
+        <a href="http://www.cse.unsw.edu.au/~chak/" target="_blank">
+        Manuel Chakravarty</a>'s Haskell course exercises.
+        The simulation is done in Haskell on the server.
         Client code uses HTML 5 to display instantaneous positions of bodies.
-        It communicates with the (stateless) server using JSON. The web site is written in
+        It communicates with the (stateless) server using JSON.
+        The web site is written in
         <a href="http://www.yesodweb.com/" target="_blank">Yesod</a>.
         <div>
           <button #reset>Reset
@@ -165,9 +167,11 @@ getHomeR = defaultLayout $ do
       var angle = Math.atan2(dy,dx);
       context.moveTo(fromx, fromy);
       context.lineTo(tox, toy);
-      context.lineTo(tox-headlen*Math.cos(angle-Math.PI/6),toy-headlen*Math.sin(angle-Math.PI/6));
+      context.lineTo(tox-headlen*Math.cos(angle-Math.PI/6),
+                     toy-headlen*Math.sin(angle-Math.PI/6));
       context.moveTo(tox, toy);
-      context.lineTo(tox-headlen*Math.cos(angle+Math.PI/6),toy-headlen*Math.sin(angle+Math.PI/6));
+      context.lineTo(tox-headlen*Math.cos(angle+Math.PI/6),
+                     toy-headlen*Math.sin(angle+Math.PI/6));
     }
 
     function drawWorld() {
@@ -187,7 +191,7 @@ getHomeR = defaultLayout $ do
         if (size < 2) size = 2;
         var x = dimX/2 + curWorld.pixInM * part.ppos.posx,
             y = dimY/2 + curWorld.pixInM * part.ppos.posy,
-            color = Math.round(Math.sqrt(part.pchar / curWorld.maxCharge) * 255);
+            color = Math.round(Math.sqrt(part.pchar/curWorld.maxCharge) * 255);
         if ( x > -10 && x < dimX + 10 && y > -10 && y < dimY + 10) {
           partsInView += 1;
           if (color >= 0) {

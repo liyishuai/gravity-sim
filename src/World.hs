@@ -34,20 +34,20 @@ readWorld fname
 
 solarWorld :: World
 solarWorld = World 0 distanceScale (earthMass / 10000) 800 1 2e5
-                      [ Particle (Mass sunMass) zeroCharge
-                                 (Pos 0 0 0) (Vel 0 0 0)
-                      , Particle (Mass cometMass) zeroCharge
-                                 (Pos cometDist 0 0) (Vel 0 cometVelocity 0)
-                      , Particle (Mass cometMass) zeroCharge
-                                 (Pos (-cometDist) (-cometDist) 0) (Vel 5000 (-5000) 0)
-                      , Particle (Mass cometMass) zeroCharge
-                                 (Pos 2.0e11 1.0e11 0) (Vel (-2500) 5000 0)
-                      , Particle (Mass earthMass) zeroCharge
-                                 (Pos earthDist  0 0) (Vel 0 earthVelocity 0)
-                      , Particle (Mass venusMass) zeroCharge
-                                 (Pos venusDist  0 0) (Vel 0 venusVelocity 0)
-                      , Particle (Mass mercuryMass) zeroCharge
-                                 (Pos mercuryDist  0 0) (Vel 0 mercuryVelocity 0)]
+             [ Particle (Mass sunMass) zeroCharge
+               (Pos 0 0 0) (Vel 0 0 0)
+             , Particle (Mass cometMass) zeroCharge
+               (Pos cometDist 0 0) (Vel 0 cometVelocity 0)
+             , Particle (Mass cometMass) zeroCharge
+               (Pos (-cometDist) (-cometDist) 0) (Vel 5000 (-5000) 0)
+             , Particle (Mass cometMass) zeroCharge
+               (Pos 2.0e11 1.0e11 0) (Vel (-2500) 5000 0)
+             , Particle (Mass earthMass) zeroCharge
+               (Pos earthDist  0 0) (Vel 0 earthVelocity 0)
+             , Particle (Mass venusMass) zeroCharge
+               (Pos venusDist  0 0) (Vel 0 venusVelocity 0)
+             , Particle (Mass mercuryMass) zeroCharge
+               (Pos mercuryDist  0 0) (Vel 0 mercuryVelocity 0)]
                       getSamples
   where
     sunMass         = 1.9891e30
@@ -69,18 +69,20 @@ solarWorld = World 0 distanceScale (earthMass / 10000) 800 1 2e5
 
 world4 :: World
 world4 = World 0 0.5 9.42590890872e11 1 1 1
-               [ Particle (Mass 1e16) zeroCharge (Pos (-100) 30 0) (Vel 0 (-65) 0)
-               , Particle (Mass 1e16) zeroCharge (Pos 240 0 0)     (Vel (-40) 30 0)
-               , Particle (Mass 1e16) zeroCharge (Pos 50 200 0)    (Vel 0 (-30) 0)
-               , Particle (Mass 1e15) zeroCharge (Pos 0 (-300) 0)  (Vel 0 5 0)]
-               getSamples
+         [ Particle (Mass 1e16) zeroCharge (Pos (-100) 30 0) (Vel 0 (-65) 0)
+         , Particle (Mass 1e16) zeroCharge (Pos 240 0 0)     (Vel (-40) 30 0)
+         , Particle (Mass 1e16) zeroCharge (Pos 50 200 0)    (Vel 0 (-30) 0)
+         , Particle (Mass 1e15) zeroCharge (Pos 0 (-300) 0)  (Vel 0 5 0)]
+         getSamples
   where getSamples = plotSamplesGrid 4 4 scale
         scale      = 0.5
 
 world2 :: World
 world2 = World 0 1 1 1e13 1e-7 1e6
-         [ Particle (Mass 1e3) (Charge 8.61750428843383e-8) (Pos (-100) 0 0) zeroVel
-         , Particle (Mass 1e3) (Charge 8.61750428843383e-8) (Pos 100    0 0) zeroVel]
+         [ Particle (Mass 1e3) (Charge 8.61750428843383e-8)
+           (Pos (-100) 0 0) zeroVel
+         , Particle (Mass 1e3) (Charge 8.61750428843383e-8)
+           (Pos 100    0 0) zeroVel]
          getSamples
   where getSamples = plotSamplesGrid 4 4 scale
         scale      = 1

@@ -36,7 +36,8 @@ prop_period index period dt = let
   newPlanet = parts newWorld !! index in
   oldPlanet != newPlanet
 
-forAlldt :: (Arbitrary a, Ord a, Num a, Show a, Testable prop) => (a -> prop) -> Property
+forAlldt :: (Arbitrary a, Ord a, Num a, Show a, Testable prop) =>
+  (a -> prop) -> Property
 forAlldt = forAll (suchThat arbitrary (>100))
 
 prop_earth = expectFailure . forAlldt $ prop_period 4 earthPeriod
@@ -51,7 +52,8 @@ staticParticle = do
 
 -- | Helper function to modify the charge of particle for testing
 modifyCharge :: Particle -> Particle -> Particle
-modifyCharge p0@(Particle (Mass m0) (Charge c0) _ _) p1@(Particle (Mass m1) _ _ _) =
+modifyCharge p0@(Particle (Mass m0) (Charge c0) _ _)
+             p1@(Particle (Mass m1) _ _ _) =
   p1 { pchar = Charge (bigG * m0 * m1 / (ke * c0)) }
 
 -- | Check if a two-particle system is stable

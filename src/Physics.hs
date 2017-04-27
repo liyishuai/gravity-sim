@@ -1,4 +1,5 @@
-module Physics (bigG, ke, gravity, electroMagnetic, Field, zeroCharge, zeroVel, zeroField, posPart, (./), (./.), (+.), (.+.)) where
+module Physics (bigG, ke, gravity, electro, Field, zeroCharge, zeroVel,
+                zeroField, posPart, (./), (./.), (+.), (.+.)) where
 
 import           Types
 
@@ -39,7 +40,9 @@ gravity (Particle (Mass m0) _ (Pos x0 y0 z0) _) = Field f
   where
     f (Particle (Mass m1) _ (Pos x1 y1 z1) _)
       | d < epsilon = Force 0 0 0
-      | otherwise = Force (absAccel * dx / d) (absAccel * dy / d) (absAccel * dz / d)
+      | otherwise = Force (absAccel * dx / d)
+                          (absAccel * dy / d)
+                          (absAccel * dz / d)
       where
         dx       = x0 - x1
         dy       = y0 - y1
@@ -48,12 +51,14 @@ gravity (Particle (Mass m0) _ (Pos x0 y0 z0) _) = Field f
         d        = sqrt dsqr
         absAccel = bigG * m0 * m1 / dsqr
 
-electroMagnetic :: Particle -> Field
-electroMagnetic (Particle _ (Charge c0) (Pos x0 y0 z0) _) = Field f
+electro :: Particle -> Field
+electro (Particle _ (Charge c0) (Pos x0 y0 z0) _) = Field f
   where
     f (Particle _ (Charge c1) (Pos x1 y1 z1) _)
       | d < epsilon = Force 0 0 0
-      | otherwise = Force (absAccel * dx / d) (absAccel * dy / d) (absAccel * dz / d)
+      | otherwise = Force (absAccel * dx / d)
+                          (absAccel * dy / d)
+                          (absAccel * dz / d)
       where
         dx = x1 - x0
         dy = y1 - y0

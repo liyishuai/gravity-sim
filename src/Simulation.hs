@@ -32,7 +32,7 @@ updateSample f samps = let
 advanceWorld :: Double -> World -> World
 advanceWorld dt world = let
   particles = fromList $ parts world
-  fields = V.map (gravity +. electroMagnetic) particles
+  fields = V.map (gravity +. electro) particles
   field = V.foldl (.+.) zeroField fields
   dParticles = fromVector (ix1 (V.length particles)) particles
   newParticles = R.map (moveParticle dt . accelerate dt field) dParticles in

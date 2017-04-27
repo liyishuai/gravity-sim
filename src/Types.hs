@@ -1,7 +1,8 @@
 {-# LANGUAGE DeriveGeneric #-}
 
 module Types (
-  Mass(..), Charge(..), Position(..), Velocity(..), Accel(..), Particle(..), World(..), Force(..), Sample(..), partsWorld
+  Mass(..), Charge(..), Position(..), Velocity(..), Accel(..), Particle(..),
+  World(..), Force(..), Sample(..), partsWorld
 ) where
 
 import           Data.Aeson      hiding (Array)
@@ -11,10 +12,14 @@ import           Test.QuickCheck
 
 newtype Mass   = Mass Double deriving (Show, Read, Generic) -- in kilograms
 newtype Charge = Charge Double deriving (Show, Read, Generic) -- in Coulomb
-data Position  = Pos { posx :: Double, posy :: Double, posz :: Double } deriving (Show, Read, Generic) -- in meters
-data Velocity  = Vel { velx :: Double, vely :: Double, velz :: Double } deriving (Show, Read, Generic) -- in meters/second
-data Accel     = Accel { accx :: Double, accy :: Double, accz :: Double } deriving (Show, Read, Generic) -- in meters/second^2
-data Force     = Force { fx :: Double, fy :: Double, fz :: Double} deriving (Show, Read, Generic) -- in newton
+data Position  = Pos { posx :: Double, posy :: Double, posz :: Double }
+  deriving (Show, Read, Generic) -- in meters
+data Velocity  = Vel { velx :: Double, vely :: Double, velz :: Double }
+  deriving (Show, Read, Generic) -- in meters/second
+data Accel     = Accel { accx :: Double, accy :: Double, accz :: Double }
+  deriving (Show, Read, Generic) -- in meters/second^2
+data Force     = Force { fx :: Double, fy :: Double, fz :: Double}
+  deriving (Show, Read, Generic) -- in newton
 
 data Particle = Particle {
     pmass :: Mass
@@ -30,11 +35,18 @@ data Sample = Sample {
 
 -- The world state consists of three scaling factors and a set of particles.
 --
--- * The first scaling factor determines which fraction of a pixel represents one meter.
+-- * The first scaling factor determines which fraction of a pixel represents
+--   one meter.
 -- * The second scaling factor determines which fraction of a pixel represents
---   one kilogram when determining the radius of the circle representing a particle.
--- * The third scaling factor determines how many simulated seconds correspond to
---   one second of real time.
+--   one kilogram when determining the radius of the circle representing a
+--   particle.
+-- * The third scaling factor determines which fraction of a pixel represents
+--   one newton when determining the length of the arrow representing the force
+--   of the field sampler
+-- * The fourth scaling factor determines the range of charge within which the
+--   difference can be shown by the color of pixels
+-- * The fifth scaling factor determines how many simulated seconds correspond
+--   to one second of real time.
 --
 data World = World {
     seqNum        :: Int    -- sequence number to serialize communications
