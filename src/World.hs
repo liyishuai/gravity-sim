@@ -31,7 +31,7 @@ readWorld fname
        exitFailure
 
 solarWorld :: World
-solarWorld = World 0 distanceScale (earthMass / 10000) 800 1 1e6
+solarWorld = World 0 distanceScale (earthMass / 10000) 800 1 2e5
                       [ Particle (Mass sunMass) zeroCharge
                                  (Pos 0 0 0) (Vel 0 0 0)
                       , Particle (Mass cometMass) zeroCharge

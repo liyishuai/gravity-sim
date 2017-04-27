@@ -1,14 +1,17 @@
-{-# LANGUAGE TypeFamilies, QuasiQuotes, MultiParamTypeClasses,
-             TemplateHaskell, OverloadedStrings #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE OverloadedStrings     #-}
+{-# LANGUAGE QuasiQuotes           #-}
+{-# LANGUAGE TemplateHaskell       #-}
+{-# LANGUAGE TypeFamilies          #-}
 module Main where
 
-import Yesod
-import Types
-import System.Environment (getEnv)
-import qualified Control.Exception as E
+import qualified Control.Exception  as E
+import           System.Environment (getEnv)
+import           Types
+import           Yesod
 
-import World
-import Simulation
+import           Simulation
+import           World
 
 -- to do:
 -- add Pause button
@@ -204,7 +207,7 @@ getHomeR = defaultLayout $ do
             fx = sample.sfor.fx * curWorld.pixInN,
             fy = sample.sfor.fy * curWorld.pixInN;
         ctx.beginPath();
-        canvas_arrow(ctx, x-fx, y-fy, x+fx, y+fy);
+        canvas_arrow(ctx, x, y, x+fx, y+fy);
         ctx.stroke();
         partsInView += 1;
       }
