@@ -9,6 +9,7 @@ import           Data.Array.Repa
 import           GHC.Generics
 
 newtype Mass   = Mass Double deriving (Show, Read, Generic) -- in kilograms
+newtype Charge = Charge Double deriving (Show, Read, Generic) -- in Coulomb
 data Position  = Pos { posx :: Double, posy :: Double, posz :: Double } deriving (Show, Read, Generic) -- in meters
 data Velocity  = Vel { velx :: Double, vely :: Double, velz :: Double } deriving (Show, Read, Generic) -- in meters/second
 data Accel     = Accel { accx :: Double, accy :: Double, accz :: Double } deriving (Show, Read, Generic) -- in meters/second^2
@@ -16,6 +17,7 @@ data Force     = Force { fx :: Double, fy :: Double, fz :: Double} deriving (Sho
 
 data Particle = Particle {
     pmass :: Mass
+  , pchar :: Charge
   , ppos  :: Position
   , pvel  :: Velocity
 } deriving (Show, Read, Generic)
@@ -51,6 +53,9 @@ instance ToJSON   Velocity
 
 instance FromJSON Mass
 instance ToJSON   Mass
+
+instance FromJSON Charge
+instance ToJSON   Charge
 
 instance FromJSON Particle
 instance ToJSON   Particle
