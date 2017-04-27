@@ -1,8 +1,8 @@
 {-# LANGUAGE DeriveGeneric #-}
 
 module Types (
-  Mass(..), Charge(..), Position(..), Velocity(..), Accel(..), Particle(..),
-  World(..), Force(..), Sample(..), partsWorld
+  Mass(..), Charge(..), Magnet(..), Position(..), Velocity(..), Accel(..),
+  Particle(..), World(..), Force(..), Sample(..), partsWorld
 ) where
 
 import           Data.Aeson      hiding (Array)
@@ -11,7 +11,9 @@ import           GHC.Generics
 import           Test.QuickCheck
 
 newtype Mass   = Mass Double deriving (Show, Read, Generic) -- in kilograms
-newtype Charge = Charge Double deriving (Show, Read, Generic) -- in Coulomb
+newtype Charge = Charge Double deriving (Show, Read, Generic) -- in coulomb
+data Magnet = Mag { mx :: Double, my :: Double, mz :: Double }
+  deriving (Show, Read, Generic) -- in tesla
 data Position  = Pos { posx :: Double, posy :: Double, posz :: Double }
   deriving (Show, Read, Generic) -- in meters
 data Velocity  = Vel { velx :: Double, vely :: Double, velz :: Double }

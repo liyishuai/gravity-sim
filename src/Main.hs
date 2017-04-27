@@ -23,11 +23,12 @@ data Gravity = Gravity
 instance Yesod Gravity
 
 mkYesod "Gravity" [parseRoutes|
-  /        HomeR    GET
-  /advance AdvanceR POST
-  /solar   SolarR   GET
-  /world4  World4R  GET
-  /world2  World2R  GET
+  /          HomeR    GET
+  /advance   AdvanceR POST
+  /solar     SolarR   GET
+  /world4    World4R  GET
+  /world2    World2R  GET
+  /world2neg World2negR GET
 |]
 
 boxColor, bodyColor :: String
@@ -66,6 +67,7 @@ getHomeR = defaultLayout $ do
             <option value="solar"> Inner planets
             <option value="world4"> Four stars
             <option value="world2"> Two particles
+            <option value="world2neg"> Two negative particles
   |]
 
   toWidget [cassius|
@@ -93,7 +95,8 @@ getHomeR = defaultLayout $ do
     var urls = { // map from simulation names to urls
       solar:   "@{SolarR}",
       world4:  "@{World4R}",
-      world2:  "@{World2R}"
+      world2:  "@{World2R}",
+      world2neg: "@{World2negR}"
     };
     // Important: changes to global variables
     // may only happen inside JSON handlers
@@ -191,7 +194,7 @@ getHomeR = defaultLayout $ do
         if (size < 2) size = 2;
         var x = dimX/2 + curWorld.pixInM * part.ppos.posx,
             y = dimY/2 + curWorld.pixInM * part.ppos.posy,
-            color = Math.round(Math.sqrt(part.pchar/curWorld.maxCharge) * 255);
+            color = Math.round(part.pchar / curWorld.maxCharge * 255);
         if ( x > -10 && x < dimX + 10 && y > -10 && y < dimY + 10) {
           partsInView += 1;
           if (color >= 0) {
@@ -244,6 +247,9 @@ getWorld4R = returnJson world4
 
 getWorld2R :: Handler Value
 getWorld2R = returnJson world2
+
+getWorld2negR :: Handler Value
+getWorld2negR = returnJson world2neg
 
 main :: IO ()
 main = do

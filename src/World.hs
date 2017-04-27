@@ -8,7 +8,9 @@ module World (
   -- a 4-body world
   world4,
   -- a 2-body world
-  world2
+  world2,
+  -- a 2-body world of negative charges
+  world2neg
 ) where
 
 import           Control.Exception (catch)
@@ -33,7 +35,7 @@ readWorld fname
        exitFailure
 
 solarWorld :: World
-solarWorld = World 0 distanceScale (earthMass / 10000) 800 1 2e5
+solarWorld = World 0 distanceScale (earthMass / 1000000) 800 1 2e5
              [ Particle (Mass sunMass) zeroCharge
                (Pos 0 0 0) (Vel 0 0 0)
              , Particle (Mass cometMass) zeroCharge
@@ -68,7 +70,7 @@ solarWorld = World 0 distanceScale (earthMass / 10000) 800 1 2e5
       concatMap (plotSamplesCircle 12) [earthDist, venusDist, mercuryDist]
 
 world4 :: World
-world4 = World 0 0.5 9.42590890872e11 1 1 1
+world4 = World 0 0.5 1e8 1 1 1
          [ Particle (Mass 1e16) zeroCharge (Pos (-100) 30 0) (Vel 0 (-65) 0)
          , Particle (Mass 1e16) zeroCharge (Pos 240 0 0)     (Vel (-40) 30 0)
          , Particle (Mass 1e16) zeroCharge (Pos 50 200 0)    (Vel 0 (-30) 0)
@@ -78,11 +80,21 @@ world4 = World 0 0.5 9.42590890872e11 1 1 1
         scale      = 0.5
 
 world2 :: World
-world2 = World 0 1 1 1e13 1e-7 1e6
+world2 = World 0 1 1e-5 1e13 1e-7 1e6
          [ Particle (Mass 1e3) (Charge 8.61750428843383e-8)
            (Pos (-100) 0 0) zeroVel
          , Particle (Mass 1e3) (Charge 8.61750428843383e-8)
            (Pos 100    0 0) zeroVel]
+         getSamples
+  where getSamples = plotSamplesGrid 4 4 scale
+        scale      = 1
+
+world2neg :: World
+world2neg = World 0 1 1e-5 1.5e12 1e-7 1e6
+         [ Particle (Mass 1e3) (Charge (-8.61750428843383e-8))
+           (Pos 0 (-100) 0) zeroVel
+         , Particle (Mass 1e3) (Charge (-8.61750428843383e-8))
+           (Pos 0   100  0) zeroVel]
          getSamples
   where getSamples = plotSamplesGrid 4 4 scale
         scale      = 1
