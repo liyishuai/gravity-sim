@@ -27,6 +27,7 @@ mkYesod "Gravity" [parseRoutes|
   /advance AdvanceR POST
   /solar   SolarR   GET
   /world4  World4R  GET
+  /world2  World2R  GET
 |]
 
 boxColor, bodyColor :: String
@@ -62,6 +63,7 @@ getHomeR = defaultLayout $ do
           <select>
             <option value="solar"> Inner planets
             <option value="world4"> Four stars
+            <option value="world2"> Two particles
   |]
 
   toWidget [cassius|
@@ -88,7 +90,8 @@ getHomeR = defaultLayout $ do
   toWidget [julius|
     var urls = { // map from simulation names to urls
       solar:   "@{SolarR}",
-      world4:  "@{World4R}"
+      world4:  "@{World4R}",
+      world2:  "@{World2R}"
     };
     // Important: changes to global variables
     // may only happen inside JSON handlers
@@ -184,7 +187,7 @@ getHomeR = defaultLayout $ do
         if (size < 2) size = 2;
         var x = dimX/2 + curWorld.pixInM * part.ppos.posx,
             y = dimY/2 + curWorld.pixInM * part.ppos.posy,
-            color = Math.round(part.pchar / curWorld.maxCharge * 255);
+            color = Math.round(Math.sqrt(part.pchar / curWorld.maxCharge) * 255);
         if ( x > -10 && x < dimX + 10 && y > -10 && y < dimY + 10) {
           partsInView += 1;
           if (color >= 0) {
@@ -234,6 +237,9 @@ getSolarR  = returnJson solarWorld
 
 getWorld4R :: Handler Value
 getWorld4R = returnJson world4
+
+getWorld2R :: Handler Value
+getWorld2R = returnJson world2
 
 main :: IO ()
 main = do

@@ -6,7 +6,9 @@ module World (
 
   solarWorld,
   -- a 4-body world
-  world4
+  world4,
+  -- a 2-body world
+  world2
 ) where
 
 import           Control.Exception (catch)
@@ -65,12 +67,6 @@ solarWorld = World 0 distanceScale (earthMass / 10000) 800 1 2e5
     getSamples =
       concatMap (plotSamplesCircle 12) [earthDist, venusDist, mercuryDist]
 
-plotSamplesCircle :: Int -> Double -> [Sample]
-plotSamplesCircle n r =
-  map (\i -> Sample (Pos (cos (ang i) * r) (sin (ang i) * r) 0) (Force 0 0 0))
-      [0..n - 1]
-  where ang i = 2 * pi / realToFrac n * realToFrac i
-
 world4 :: World
 world4 = World 0 0.5 9.42590890872e11 1 1 1
                [ Particle (Mass 1e16) zeroCharge (Pos (-100) 30 0) (Vel 0 (-65) 0)
@@ -80,6 +76,20 @@ world4 = World 0 0.5 9.42590890872e11 1 1 1
                getSamples
   where getSamples = plotSamplesGrid 4 4 scale
         scale      = 0.5
+
+world2 :: World
+world2 = World 0 1 1 1e13 1e-7 1e6
+         [ Particle (Mass 1e3) (Charge 8.61750428843383e-8) (Pos (-100) 0 0) zeroVel
+         , Particle (Mass 1e3) (Charge 8.61750428843383e-8) (Pos 100    0 0) zeroVel]
+         getSamples
+  where getSamples = plotSamplesGrid 4 4 scale
+        scale      = 1
+
+plotSamplesCircle :: Int -> Double -> [Sample]
+plotSamplesCircle n r =
+  map (\i -> Sample (Pos (cos (ang i) * r) (sin (ang i) * r) 0) (Force 0 0 0))
+      [0..n - 1]
+  where ang i = 2 * pi / realToFrac n * realToFrac i
 
 plotSamplesGrid :: Int -> Int -> Double -> [Sample]
 plotSamplesGrid m n scale =

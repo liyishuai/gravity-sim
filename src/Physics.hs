@@ -1,4 +1,4 @@
-module Physics (bigG, gravity, electroMagnetic, Field, zeroCharge, zeroField, posPart, (./), (./.), (+.), (.+.)) where
+module Physics (bigG, gravity, electroMagnetic, Field, zeroCharge, zeroVel, zeroField, posPart, (./), (./.), (+.), (.+.)) where
 
 import           Types
 
@@ -20,11 +20,14 @@ oneKG = Mass 1
 zeroCharge :: Charge
 zeroCharge = Charge 0
 
+sampleCharge :: Charge
+sampleCharge = Charge 1.5e-10
+
 zeroVel :: Velocity
 zeroVel = Vel 0 0 0
 
 posPart :: Position -> Particle
-posPart pos = Particle oneKG zeroCharge pos zeroVel
+posPart pos = Particle oneKG sampleCharge pos zeroVel
 
 newtype Field = Field (Particle -> Force)
 
