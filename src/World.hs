@@ -30,7 +30,7 @@ readWorld fname
        exitFailure
 
 solarWorld :: World
-solarWorld = World 0 distanceScale (earthMass / 10000) 10000 1e6
+solarWorld = World 0 distanceScale (earthMass / 10000) 800 1e6
                       [ Particle (Mass sunMass)
                                  (Pos 0 0 0) (Vel 0 0 0)
                       , Particle (Mass cometMass)
@@ -45,10 +45,7 @@ solarWorld = World 0 distanceScale (earthMass / 10000) 10000 1e6
                                  (Pos venusDist  0 0) (Vel 0 venusVelocity 0)
                       , Particle (Mass mercuryMass)
                                  (Pos mercuryDist  0 0) (Vel 0 mercuryVelocity 0)]
-                      [ Sample (Pos earthDist venusDist 0)   (Force 0 (-65) (-65))
-                      , Sample (Pos venusDist earthDist 0)   (Force (-40) 30 30)
-                      , Sample (Pos earthDist mercuryDist 0) (Force 0 (-30) (-30))
-                      , Sample (Pos mercuryDist venusDist 0) (Force 0 5 5)]
+                      getSamples
   where
     sunMass         = 1.9891e30
     earthDist       = 152098232e3   -- Aphelion
@@ -63,8 +60,15 @@ solarWorld = World 0 distanceScale (earthMass / 10000) 10000 1e6
     cometDist       = 2.0e11
     cometMass       = 1.0e20
     cometVelocity   = 7000
-    --
     distanceScale = (fromIntegral height * 0.4) / earthDist
+    getSamples =
+      concatMap (plotSamplesCircle 12) [earthDist, venusDist, mercuryDist]
+
+plotSamplesCircle :: Int -> Double -> [Sample]
+plotSamplesCircle n r =
+  map (\i -> Sample (Pos (cos (ang i) * r) (sin (ang i) * r) 0) (Force 0 0 0))
+      [0..n - 1]
+  where ang i = 2 * pi / realToFrac n * realToFrac i
 
 world4 :: World
 world4 = World 0 0.5 9.42590890872e11 1 1
@@ -72,7 +76,8 @@ world4 = World 0 0.5 9.42590890872e11 1 1
                , Particle (Mass 1e16) (Pos 240 0 0)     (Vel (-40) 30 0)
                , Particle (Mass 1e16) (Pos 50 200 0)    (Vel 0 (-30) 0)
                , Particle (Mass 1e15) (Pos 0 (-300) 0)  (Vel 0 5 0)]
-               [ Sample (Pos (-100) 30 0) (Force (-100) 30 0)
-               , Sample (Pos 240 0 0)     (Force 240 0 0)
-               , Sample (Pos 50 200 0)    (Force 240 0 0)
-               , Sample (Pos 0 (-300) 0)  (Force 0 (-300) 0)]
+               getSamples
+  where getSamples = [ Sample (Pos (-100) 30 0) (Force (-100) 30 0)
+                     , Sample (Pos 240 0 0)     (Force 240 0 0)
+                     , Sample (Pos 50 200 0)    (Force 240 0 0)
+                     , Sample (Pos 0 (-300) 0)  (Force 0 (-300) 0)]
