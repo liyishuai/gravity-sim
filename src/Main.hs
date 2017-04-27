@@ -3,7 +3,7 @@
 {-# LANGUAGE QuasiQuotes           #-}
 {-# LANGUAGE TemplateHaskell       #-}
 {-# LANGUAGE TypeFamilies          #-}
-module Main where
+module Main (module Main) where
 
 import qualified Control.Exception  as E
 import           System.Environment (getEnv)

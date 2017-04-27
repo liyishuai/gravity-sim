@@ -26,13 +26,13 @@ accelerate dt f p@(Particle mass c pos vp) = let
 updateSample :: Field -> [Sample] -> [Sample]
 updateSample f samps = let
   vSamples = fromList samps
-  newSamps = V.map (\s -> s { sfor = f ./ (posPart (spos s))} ) vSamples in
+  newSamps = V.map (\s -> s { sfor = f ./ posPart (spos s)} ) vSamples in
     V.toList newSamps
 
 advanceWorld :: Double -> World -> World
 advanceWorld dt world = let
   particles = fromList $ parts world
-  fields = V.map (gravity +. electroMagnetic) $ particles
+  fields = V.map (gravity +. electroMagnetic) particles
   field = V.foldl (.+.) zeroField fields
   dParticles = fromVector (ix1 (V.length particles)) particles
   newParticles = R.map (moveParticle dt . accelerate dt field) dParticles in

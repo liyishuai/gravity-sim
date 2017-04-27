@@ -1,5 +1,5 @@
-module JsonOpt where
-import Data.Aeson.TH
+module JsonOpt (module JsonOpt) where
+import           Data.Aeson.TH
 
 -- Options for Json must be defined in a separate module
 

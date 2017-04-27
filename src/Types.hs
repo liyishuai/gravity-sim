@@ -71,24 +71,22 @@ instance ToJSON   Force
 instance FromJSON World
 instance ToJSON   World
 
-instance Eq Position where
-  Pos x1 y1 z1 == Pos x2 y2 z2 = let
+distance :: Double -> Double -> Double -> Double -> Double -> Double -> Double
+distance x1 y1 z1 x2 y2 z2 = let
     dx = x1 - x2
     dy = y1 - y2
     dz = z1 - z2
-    sqrd = dx^2 + dy^2 + dz^2
-    d = sqrt sqrd in
-      d < epsilon where
+    sqrd = dx^2 + dy^2 + dz^2 in
+    sqrt sqrd
+
+instance Eq Position where
+  Pos x1 y1 z1 == Pos x2 y2 z2 =
+    distance x1 y1 z1 x2 y2 z2 < epsilon where
     epsilon = 1e-10
 
 instance Eq Force where
-  Force x1 y1 z1 == Force x2 y2 z2 = let
-    dx = x1 - x2
-    dy = y1 - y2
-    dz = z1 - z2
-    sqrd = dx^2 + dy^2 + dz^2
-    d = sqrt sqrd in
-      d < epsilon where
+  Force x1 y1 z1 == Force x2 y2 z2 =
+    distance x1 y1 z1 x2 y2 z2 < epsilon where
     epsilon = 1e-10
 
 instance Eq Sample where

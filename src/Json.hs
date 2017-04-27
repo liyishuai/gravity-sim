@@ -1,9 +1,9 @@
 {-# LANGUAGE TemplateHaskell #-}
-module Json where
+module Json (module Json) where
 
-import World
-import Data.Aeson.TH
-import JsonOpt
+import           Data.Aeson.TH
+import           JsonOpt
+import           World
 
 deriveJSON options0610 ''Position
 deriveJSON options0610 ''Velocity
