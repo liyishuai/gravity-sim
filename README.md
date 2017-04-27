@@ -11,9 +11,9 @@ in a browser.
 Dependencies: yesod, repa
 
 Overview of files:
-**Types.hs:** all types used in the project
-**Physics.hs:** encoding of physical laws used by the simulation
-**Simulation.hs:** simulation logic
-**World.hs:** initial configurations of all simulated worlds
-**Main.hs:** the main module that runs a simulation
-**Test.hs:** tests
+ * **Types.hs:** all types used in the project
+ * **Physics.hs:** encoding of physical laws used by the simulation
+ * **Simulation.hs:** simulation logic
+ * **World.hs:** initial configurations of all simulated worlds
+ * **Main.hs:** the main module that runs a simulation
+ * **Test.hs:** tests
